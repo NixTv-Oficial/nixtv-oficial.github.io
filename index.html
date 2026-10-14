@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nix TV - Seu Entretenimento Sem Limites | IPTV HD e 4K</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        nixdark: '#04091a',
+                        nixcard: '#0b132b',
+                        nixcyan: '#00d2ff',
+                        nixpurple: '#9d4edd',
+                        nixpink: '#ff007f'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #04091a;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(0, 210, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 60%, rgba(157, 78, 221, 0.15) 0%, transparent 40%);
+            color: #ffffff;
+        }
+        .neon-border-cyan {
+            border: 2px solid #00d2ff;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.35), inset 0 0 10px rgba(0, 210, 255, 0.15);
+        }
+        .neon-border-white {
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        .neon-border-gold {
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.35);
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #00d2ff, #9d4edd, #ff007f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-neon {
+            background: linear-gradient(90deg, #00d2ff 0%, #7b2cbf 50%, #ff007f 100%);
+            background-size: 200% auto;
+            transition: 0.4s;
+        }
+        .btn-neon:hover {
+            background-position: right center;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.6);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-nixcyan selection:text-nixdark">
+
+    <!-- CABEÇALHO / NAVBAR -->
+    <header class="sticky top-0 z-50 bg-nixdark/90 backdrop-blur-md border-b border-cyan-500/20">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <!-- Logo Nix TV -->
+            <a href="#" class="flex items-center gap-2 group">
+                <span class="text-3xl font-black tracking-tighter text-white">Nix</span>
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-nixcyan via-blue-600 to-nixpurple flex items-center justify-center shadow-lg shadow-cyan-500/30 transform group-hover:scale-105 transition">
+                    <span class="text-nixdark font-black text-xl leading-none">N</span>
+                </div>
+                <span class="text-3xl font-light text-white">tv</span>
+            </a>
+
+            <!-- Menu Desktop -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-300">
+                <a href="#inicio" class="hover:text-nixcyan transition">Início</a>
+                <a href="#teste-gratis" class="hover:text-nixcyan transition">Teste Grátis</a>
+                <a href="#planos" class="hover:text-nixcyan transition">Planos</a>
+                <a href="#dispositivos" class="hover:text-nixcyan transition">Dispositivos</a>
+            </nav>
+
+            <!-- Botões do Topo -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleModal()" class="text-xs md:text-sm font-semibold px-4 py-2 rounded-full border border-purple-500/50 hover:bg-purple-500/20 transition">
+                    👤 Área do Cliente
+                </button>
+                <a href="#teste-gratis" class="hidden sm:inline-block btn-neon text-white font-bold text-xs md:text-sm px-5 py-2.5 rounded-full shadow-lg">
+                    TESTE GRÁTIS
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO / CAPA PRINCIPAL -->
+    <section id="inicio" class="relative pt-12 pb-20 px-4 overflow-hidden">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Coluna da Esquerda: Textos -->
+            <div class="space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-nixcyan text-xs font-bold uppercase tracking-wider">
+                    <span>📢 Adeus, Anúncios! Servidor Turbo 2026</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight">
+                    SEU ENTRETENIMENTO <br>
+                    <span class="gradient-text">SEM LIMITES!</span>
+                </h1>
+
+                <p class="text-gray-300 text-lg sm:text-xl max-w-xl mx-auto lg:mx-0">
+                    Conteúdos para todas as idades reunidos em um só lugar. <strong>+2.500 canais ao vivo</strong>, os melhores filmes, séries e lançamentos em qualidade <strong>SD, HD, FHD e 4K</strong> sem travamentos.
+                </p>
+
+                <!-- Destaques Rápidos -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <div class="bg-nixcard/90 p-3 rounded-xl border border-cyan-500/30 text-center">
+                        <p class="text-2xl font-black text-nixcyan">+2.500</p>
+                        <p class="text-xs text-gray-400">Canais ao Vivo</p>
+                    </div>
+                    <div class="bg-nixcard/90 p-3 rounded-xl border border-purple-500/30 text-center">
+                        <p class="text-2xl font-black text-purple-400">4K Ultra</p>
+                        <p class="text-xs text-gray-400">Sem Travamentos</p>
+                    </div>
+                    <div class="bg-nixcard/90 p-3 rounded-xl border border-pink-500/30 text-center">
+                        <p class="text-2xl font-black text-pink-400">15% OFF</p>
+                        <p class="text-xs text-gray-400">Para Novos Clientes</p>
+                    </div>
+                    <div class="bg-nixcard/90 p-3 rounded-xl border border-green-500/30 text-center">
+                        <p class="text-2xl font-black text-green-400">24/7</p>
+                        <p class="text-xs text-gray-400">Suporte no Whats</p>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                    <a href="#teste-gratis" class="btn-neon text-white font-extrabold text-lg px-8 py-4 rounded-xl shadow-xl flex items-center justify-center gap-2">
+                        🚀 SOLICITAR TESTE GRÁTIS AGORA
+                    </a>
+                    <a href="#planos" class="bg-nixcard hover:bg-slate-800 border border-cyan-500/40 text-white font-bold text-lg px-8 py-4 rounded-xl transition flex items-center justify-center">
+                        Ver Planos e Preços
+                    </a>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita: Formulário de Teste IPTV (Estilo 51CBG) -->
+            <div id="teste-gratis" class="bg-nixcard p-6 sm:p-8 rounded-3xl neon-border-cyan relative">
+                <div class="absolute -top-4 right-6 bg-gradient-to-r from-pink-600 to-purple-600 text-white text-xs font-extrabold px-4 py-1.5 rounded-full shadow-lg">
+                    🏷️ 15% DE DESCONTO NA 1ª ASSINATURA
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-extrabold mb-2">Solicite seu Teste IPTV Grátis</h2>
+                <p class="text-gray-400 text-sm mb-6">
+                    Preencha os dados abaixo, escolha seu aparelho e receba seu acesso liberado imediatamente no WhatsApp!
+                </p>
+
+                <form onsubmit="enviarTesteWhatsApp(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Seu Nome</label>
+                        <input type="text" id="nomeCliente" required placeholder="Digite seu nome..." class="w-full bg-nixdark border border-gray-700 focus:border-nixcyan rounded-xl px-4 py-3 text-white outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Onde você quer assistir?</label>
+                        <select id="aparelhoCliente" required class="w-full bg-nixdark border border-gray-700 focus:border-nixcyan rounded-xl px-4 py-3 text-white outline-none transition">
+                            <option value="Smart TV (Samsung, LG, Android)">📺 Smart TV (Samsung, LG, Android, etc.)</option>
+                            <option value="TV Box">📦 TV Box</option>
+                            <option value="Celular (Android / iPhone)">📱 Celular (Android ou iPhone)</option>
+                            <option value="Fire Stick / Roku Stick">🔌 Fire Stick / Roku Stick</option>
+                            <option value="Notebook / Computador">💻 Notebook / Computador</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-nixdark font-black text-lg py-4 rounded-xl shadow-lg shadow-green-500/30 transition flex items-center justify-center gap-2">
+                        <span>📲 GERAR TESTE NO WHATSAPP</span>
+                    </button>
+                    <p class="text-center text-xs text-gray-400">
+                        🔒 Sem necessidade de cartão de crédito. Liberação imediata.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- STRIP DE STREAMINGS E CANAIS INCLUSOS -->
+    <section class="py-8 bg-nixcard/60 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-xs font-bold uppercase tracking-widest text-nixcyan mb-4">TUDO E MUITO MAIS, EM UM SÓ LUGAR! CANAIS E STREAMINGS INCLUSOS:</p>
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4 text-xs sm:text-sm font-extrabold">
+                <span class="px-4 py-2 rounded-lg bg-red-600/20 border border-red-500/40 text-red-400">NETFLIX</span>
+                <span class="px-4 py-2 rounded-lg bg-blue-600/20 border border-blue-500/40 text-blue-400">PRIME VIDEO</span>
+                <span class="px-4 py-2 rounded-lg bg-purple-600/20 border border-purple-500/40 text-purple-300">HBO MAX</span>
+                <span class="px-4 py-2 rounded-lg bg-orange-600/20 border border-orange-500/40 text-orange-400">GLOBOPLAY</span>
+                <span class="px-4 py-2 rounded-lg bg-indigo-600/20 border border-indigo-500/40 text-indigo-300">DISNEY+ / STAR+</span>
+                <span class="px-4 py-2 rounded-lg bg-green-600/20 border border-green-500/40 text-green-400">PREMIERE & SPORTV</span>
+                <span class="px-4 py-2 rounded-lg bg-red-700/20 border border-red-600/40 text-red-400">ESPN & UFC</span>
+                <span class="px-4 py-2 rounded-lg bg-yellow-600/20 border border-yellow-500/40 text-yellow-400">TELECINE</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMO FUNCIONA EM 4 PASSOS (ESTILO 51CBG) -->
+    <section class="py-16 px-4 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl sm:text-4xl font-black">Como funciona o Teste em <span class="text-nixcyan">4 Passos</span></h2>
+            <p class="text-gray-400 mt-2">Simples, rápido e com suporte completo para configurar seu aparelho.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-nixcard p-6 rounded-2xl border border-cyan-500/20">
+                <div class="w-10 h-10 rounded-full bg-nixcyan text-nixdark font-black flex items-center justify-center text-lg mb-4">1</div>
+                <h3 class="font-bold text-lg mb-2">Peça seu Teste</h3>
+                <p class="text-gray-400 text-sm">Preencha o formulário acima ou chame direto no botão do WhatsApp.</p>
+            </div>
+            <div class="bg-nixcard p-6 rounded-2xl border border-cyan-500/20">
+                <div class="w-10 h-10 rounded-full bg-nixcyan text-nixdark font-black flex items-center justify-center text-lg mb-4">2</div>
+                <h3 class="font-bold text-lg mb-2">Receba o Acesso</h3>
+                <p class="text-gray-400 text-sm">Enviamos seu usuário e senha de teste na hora pelo WhatsApp.</p>
+            </div>
+            <div class="bg-nixcard p-6 rounded-2xl border border-cyan-500/20">
+                <div class="w-10 h-10 rounded-full bg-nixcyan text-nixdark font-black flex items-center justify-center text-lg mb-4">3</div>
+                <h3 class="font-bold text-lg mb-2">Instale o App</h3>
+                <p class="text-gray-400 text-sm">Orientamos passo a passo qual aplicativo baixar na sua TV ou Celular.</p>
+            </div>
+            <div class="bg-nixcard p-6 rounded-2xl border border-cyan-500/20">
+                <div class="w-10 h-10 rounded-full bg-nixcyan text-nixdark font-black flex items-center justify-center text-lg mb-4">4</div>
+                <h3 class="font-bold text-lg mb-2">Avalie e Assine</h3>
+                <p class="text-gray-400 text-sm">Gostou da qualidade 4K? Escolha seu plano Solo, Duo ou Família e aproveite!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TABELA DE PLANOS (IGUAL À SUA IMAGEM ENVIADA) -->
+    <section id="planos" class="py-16 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl sm:text-5xl font-black mb-3">ESCOLHA SEU <span class="gradient-text">PLANO NIX TV</span></h2>
+            <p class="text-gray-400 mb-6">Liberamos o acesso imediatamente após a confirmação do Pix.</p>
+
+            <!-- Seletor Mensal / Anual -->
+            <div class="inline-flex bg-nixcard p-1.5 rounded-full border border-purple-500/40">
+                <button id="btnMensal" onclick="trocarCiclo('mensal')" class="px-6 py-2 rounded-full text-sm font-bold bg-purple-600 text-white transition">MENSAL</button>
+                <button id="btnAnual" onclick="trocarCiclo('anual')" class="px-6 py-2 rounded-full text-sm font-bold text-gray-300 hover:text-white transition">ANUAL (Desconto VIP)</button>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 items-stretch">
+            
+            <!-- PLANO SOLO -->
+            <div class="bg-slate-800/70 rounded-3xl p-8 neon-border-cyan flex flex-col justify-between text-center hover:scale-[1.02] transition">
+                <div>
+                    <h3 class="text-3xl font-black text-nixcyan tracking-wide mb-4">SOLO</h3>
+                    <div class="text-3xl mb-1">📺</div>
+                    <p class="text-2xl font-extrabold">1 Tela</p>
+                    <p class="text-xs text-gray-300 mb-4">Dispositivos simultâneos</p>
+                    
+                    <div class="text-2xl mb-1">⬇️</div>
+                    <p class="text-xl font-bold">1 Dispositivo</p>
+                    <p class="text-xs text-gray-300 mb-6">Para download</p>
+
+                    <div class="flex justify-center gap-1.5 mb-6 text-xs font-bold text-amber-300">
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">SD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">HD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">FHD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">4K</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="my-4">
+                        <span class="text-xl font-bold">R$</span>
+                        <span id="precoSolo" class="text-6xl font-black">35</span>
+                        <span id="cicloSolo" class="text-lg font-semibold text-gray-300">/Mês</span>
+                    </div>
+                    <a href="https://wa.me/5571997108320?text=Ol%C3%A1!%20Quero%20assinar%20o%20plano%20SOLO%20(1%20Tela)%20da%20Nix%20TV!" target="_blank" class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-extrabold text-white shadow-lg hover:opacity-95 transition">
+                        ASSINAR PLANO SOLO
+                    </a>
+                </div>
+            </div>
+
+            <!-- PLANO DUO (MAIS VENDIDO) -->
+            <div class="bg-slate-800/90 rounded-3xl p-8 neon-border-white relative flex flex-col justify-between text-center transform md:-translate-y-4">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-200 text-nixdark font-black text-xs px-6 py-2 rounded-full shadow-md uppercase tracking-wider">
+                    ⭐ MAIS VENDIDO
+                </div>
+
+                <div>
+                    <h3 class="text-3xl font-black text-blue-200 tracking-wide mb-4 mt-2">DUO</h3>
+                    <div class="text-3xl mb-1">📺</div>
+                    <p class="text-2xl font-extrabold">2 Telas</p>
+                    <p class="text-xs text-gray-300 mb-4">Dispositivos simultâneos</p>
+                    
+                    <div class="text-2xl mb-1">⬇️</div>
+                    <p class="text-xl font-bold">2 Dispositivos</p>
+                    <p class="text-xs text-gray-300 mb-6">Para download</p>
+
+                    <div class="flex justify-center gap-1.5 mb-6 text-xs font-bold text-amber-300">
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">SD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">HD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">FHD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">4K</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="my-4">
+                        <span class="text-xl font-bold">R$</span>
+                        <span id="precoDuo" class="text-6xl font-black">50</span>
+                        <span id="cicloDuo" class="text-lg font-semibold text-gray-300">/Mês</span>
+                    </div>
+                    <a href="https://wa.me/5571997108320?text=Ol%C3%A1!%20Quero%20assinar%20o%20plano%20DUO%20(2%20Telas)%20da%20Nix%20TV!" target="_blank" class="block w-full py-4 rounded-xl btn-neon font-black text-white shadow-xl transition">
+                        ASSINAR PLANO DUO
+                    </a>
+                </div>
+            </div>
+
+            <!-- PLANO FAMÍLIA -->
+            <div class="bg-slate-800/70 rounded-3xl p-8 neon-border-gold flex flex-col justify-between text-center hover:scale-[1.02] transition">
+                <div>
+                    <h3 class="text-3xl font-black text-amber-400 tracking-wide mb-4">FAMÍLIA</h3>
+                    <div class="text-3xl mb-1">📺</div>
+                    <p class="text-2xl font-extrabold">3 Telas</p>
+                    <p class="text-xs text-gray-300 mb-4">Dispositivos simultâneos</p>
+                    
+                    <div class="text-2xl mb-1">⬇️</div>
+                    <p class="text-xl font-bold">3 Dispositivos</p>
+                    <p class="text-xs text-gray-300 mb-6">Para download</p>
+
+                    <div class="flex justify-center gap-1.5 mb-6 text-xs font-bold text-amber-300">
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">SD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">HD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">FHD</span>
+                        <span class="border border-amber-400/50 px-2 py-1 rounded">4K</span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="my-4">
+                        <span class="text-xl font-bold">R$</span>
+                        <span id="precoFamilia" class="text-6xl font-black">75</span>
+                        <span id="cicloFamilia" class="text-lg font-semibold text-gray-300">/Mês</span>
+                    </div>
+                    <a href="https://wa.me/5571997108320?text=Ol%C3%A1!%20Quero%20assinar%20o%20plano%20FAM%C3%8DLIA%20(3%20Telas)%20da%20Nix%20TV!" target="_blank" class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 font-extrabold text-nixdark shadow-lg hover:opacity-95 transition">
+                        ASSINAR PLANO FAMÍLIA
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DISPOSITIVOS COMPATÍVEIS (BARRA INFERIOR DO SEU BANNER) -->
+    <section id="dispositivos" class="py-12 px-4 max-w-5xl mx-auto">
+        <div class="bg-nixcard p-8 rounded-3xl neon-border-cyan text-center">
+            <h3 class="text-xl sm:text-2xl font-extrabold mb-6">FUNCIONA EM TODOS OS SEUS APARELHOS</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
+                <div class="flex flex-col items-center gap-2">
+                    <span class="text-4xl">📺</span>
+                    <span class="text-xs font-bold tracking-wider">SMART TV</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="text-4xl">📦</span>
+                    <span class="text-xs font-bold tracking-wider">TV BOX</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="text-4xl">💻</span>
+                    <span class="text-xs font-bold tracking-wider">NOTEBOOK</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="text-4xl">📱</span>
+                    <span class="text-xs font-bold tracking-wider">CELULAR</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="text-4xl">🔥</span>
+                    <span class="text-xs font-bold tracking-wider">FIRE STICK</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <span class="text-4xl">🟣</span>
+                    <span class="text-xs font-bold tracking-wider">ROKU STICK</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer class="border-t border-white/10 py-10 px-4 text-center text-gray-400 text-sm">
+        <div class="max-w-7xl mx-auto space-y-3">
+            <p class="text-xl font-black text-white">Nix <span class="text-nixcyan">tv</span> — <span class="italic font-normal text-pink-400">Mais do que TV, é o seu mundo!</span></p>
+            <p>Atendimento via WhatsApp: <strong class="text-white">(71) 99710-8320</strong></p>
+            <p class="text-xs text-gray-500">© 2026 Nix TV. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- BOTÃO FLUTUANTE DO WHATSAPP -->
+    <a href="https://wa.me/5571997108320?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Nix%20TV%20e%20quero%20atendimento!" target="_blank" class="fixed bottom-5 right-5 z-50 bg-green-500 hover:bg-green-600 text-white px-5 py-3.5 rounded-full font-extrabold shadow-2xl flex items-center gap-2 border-2 border-white/20 transition transform hover:scale-105">
+        <span>💬</span>
+        <span class="hidden sm:inline">71 99710-8320</span>
+    </a>
+
+    <!-- MODAL ÁREA DO CLIENTE / MEUS DOWNLOADS -->
+    <div id="modalCliente" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-nixcard max-w-md w-full p-6 rounded-3xl neon-border-cyan relative">
+            <button onclick="toggleModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl font-bold">✕</button>
+            <h3 class="text-2xl font-black mb-1">Área do Cliente Nix TV</h3>
+            <p class="text-xs text-gray-400 mb-6">Acesse seus aplicativos, listas e downloads salvos.</p>
+            
+            <div class="space-y-4">
+                <input type="email" placeholder="Seu e-mail de compra" class="w-full bg-nixdark border border-gray-700 rounded-xl px-4 py-3 text-sm text-white outline-none">
+                <input type="password" placeholder="Sua senha" class="w-full bg-nixdark border border-gray-700 rounded-xl px-4 py-3 text-sm text-white outline-none">
+                <button onclick="alert('Para ativar o login automático com banco de dados, vamos conectar ao Firebase ou plataforma de pagamento!')" class="w-full btn-neon py-3 rounded-xl font-bold text-sm">ENTRAR E VER DOWNLOADS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS INTERATIVOS -->
+    <script>
+        function enviarTesteWhatsApp(e) {
+            e.preventDefault();
+            const nome = document.getElementById('nomeCliente').value;
+            const aparelho = document.getElementById('aparelhoCliente').value;
+            const numero = "5571997108320";
+            const msg = `Olá, equipe Nix TV! Meu nome é *${nome}* e quero solicitar meu *TESTE GRÁTIS* para o aparelho: *${aparelho}* (+ 15% de desconto).`;
+            window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function trocarCiclo(ciclo) {
+            const btnMensal = document.getElementById('btnMensal');
+            const btnAnual = document.getElementById('btnAnual');
+            if (ciclo === 'anual') {
+                btnAnual.classList.add('bg-purple-600', 'text-white');
+                btnMensal.classList.remove('bg-purple-600', 'text-white');
+                document.getElementById('precoSolo').innerText = '299';
+                document.getElementById('cicloSolo').innerText = '/Ano';
+                document.getElementById('precoDuo').innerText = '449';
+                document.getElementById('cicloDuo').innerText = '/Ano';
+                document.getElementById('precoFamilia').innerText = '649';
+                document.getElementById('cicloFamilia').innerText = '/Ano';
+            } else {
+                btnMensal.classList.add('bg-purple-600', 'text-white');
+                btnAnual.classList.remove('bg-purple-600', 'text-white');
+                document.getElementById('precoSolo').innerText = '35';
+                document.getElementById('cicloSolo').innerText = '/Mês';
+                document.getElementById('precoDuo').innerText = '50';
+                document.getElementById('cicloDuo').innerText = '/Mês';
+                document.getElementById('precoFamilia').innerText = '75';
+                document.getElementById('cicloFamilia').innerText = '/Mês';
+            }
+        }
+
+        function toggleModal() {
+            const modal = document.getElementById('modalCliente');
+            modal.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
