@@ -214,7 +214,7 @@ $('loadHistory').onclick=async()=>{
  for(const commit of items){
  const box=document.createElement('div');box.className='bg-slate-800 rounded-lg p-3 flex items-center justify-between gap-2';
  const info=document.createElement('div');info.className='min-w-0';
- const title=document.createElement('p');title.className='font-medium break-words';title.textContent=commit.commit.message.split('\\n')[0];
+ const title=document.createElement('p');title.className='font-medium break-words';title.textContent=commit.commit.message.split('\n')[0];
  const date=document.createElement('p');date.className='text-xs text-slate-400';date.textContent=new Date(commit.commit.author.date).toLocaleString('pt-BR');
  info.append(title,date);
  const btn=document.createElement('button');btn.type='button';btn.className='border border-cyan-400 rounded px-3 py-2 text-xs shrink-0';btn.textContent='Carregar versão';
