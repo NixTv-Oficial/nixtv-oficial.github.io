@@ -427,26 +427,27 @@
             if (!popup) window.location.href = url;
         }
 
+        function formatarPreco(valor) { return Number(valor).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
         function trocarCiclo(ciclo) {
             const btnMensal = document.getElementById('btnMensal');
             const btnAnual = document.getElementById('btnAnual');
             if (ciclo === 'anual') {
                 btnAnual.classList.add('bg-purple-600', 'text-white');
                 btnMensal.classList.remove('bg-purple-600', 'text-white');
-                document.getElementById('precoSolo').innerText = String(window.NIX_CONFIG?.prices?.solo?.annual ?? 299);
+                document.getElementById('precoSolo').innerText = formatarPreco(window.NIX_CONFIG?.prices?.solo?.annual ?? 299);
                 document.getElementById('cicloSolo').innerText = '/Ano';
-                document.getElementById('precoDuo').innerText = String(window.NIX_CONFIG?.prices?.duo?.annual ?? 449);
+                document.getElementById('precoDuo').innerText = formatarPreco(window.NIX_CONFIG?.prices?.duo?.annual ?? 449);
                 document.getElementById('cicloDuo').innerText = '/Ano';
-                document.getElementById('precoFamilia').innerText = String(window.NIX_CONFIG?.prices?.familia?.annual ?? 649);
+                document.getElementById('precoFamilia').innerText = formatarPreco(window.NIX_CONFIG?.prices?.familia?.annual ?? 649);
                 document.getElementById('cicloFamilia').innerText = '/Ano';
             } else {
                 btnMensal.classList.add('bg-purple-600', 'text-white');
                 btnAnual.classList.remove('bg-purple-600', 'text-white');
-                document.getElementById('precoSolo').innerText = String(window.NIX_CONFIG?.prices?.solo?.monthly ?? 35);
+                document.getElementById('precoSolo').innerText = formatarPreco(window.NIX_CONFIG?.prices?.solo?.monthly ?? 35);
                 document.getElementById('cicloSolo').innerText = '/Mês';
-                document.getElementById('precoDuo').innerText = String(window.NIX_CONFIG?.prices?.duo?.monthly ?? 50);
+                document.getElementById('precoDuo').innerText = formatarPreco(window.NIX_CONFIG?.prices?.duo?.monthly ?? 50);
                 document.getElementById('cicloDuo').innerText = '/Mês';
-                document.getElementById('precoFamilia').innerText = String(window.NIX_CONFIG?.prices?.familia?.monthly ?? 75);
+                document.getElementById('precoFamilia').innerText = formatarPreco(window.NIX_CONFIG?.prices?.familia?.monthly ?? 75);
                 document.getElementById('cicloFamilia').innerText = '/Mês';
             }
         }
