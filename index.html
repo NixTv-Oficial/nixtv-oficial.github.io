@@ -57,7 +57,23 @@
             box-shadow: 0 0 25px rgba(0, 210, 255, 0.6);
             transform: translateY(-2px);
         }
-    html,body{max-width:100%;overflow-x:clip}img,video,svg{max-width:100%}a,button{touch-action:manipulation}#siteMovies img{display:block}#moviesSection[hidden]{display:none!important}@media(max-width:640px){#siteBanners{padding-left:12px;padding-right:12px}#siteBanners img{max-height:220px}#moviesSection{padding-top:32px;padding-bottom:32px}#siteMovies{gap:10px}#siteMovies article{border-radius:12px}#siteMovies p{font-size:12px;line-height:1.35}#planos .grid{gap:18px}#planos .grid>div{padding:20px!important;transform:none!important}#planos .text-6xl{font-size:2.7rem!important}input,select{max-width:100%;font-size:16px!important}} </style>
+    html,body{max-width:100%;overflow-x:clip}img,video,svg{max-width:100%}a,button{touch-action:manipulation}#siteMovies img{display:block}#moviesSection[hidden]{display:none!important}@media(max-width:640px){#siteBanners{padding-left:12px;padding-right:12px}#siteBanners img{max-height:220px}#moviesSection{padding-top:32px;padding-bottom:32px}#siteMovies{gap:10px}#siteMovies article{border-radius:12px}#siteMovies p{font-size:12px;line-height:1.35}#planos .grid{gap:18px}#planos .grid>div{padding:20px!important;transform:none!important}#planos .text-6xl{font-size:2.7rem!important}input,select{max-width:100%;font-size:16px!important}} @media(max-width:640px){
+#planos{padding:38px 14px!important}
+#planos>div:first-child{margin-bottom:22px!important}
+#planos h2{font-size:1.55rem!important;line-height:1.2!important;margin-bottom:10px!important}
+#planos>div:first-child>p{font-size:.83rem!important;line-height:1.45!important;margin-bottom:16px!important}
+#planos .grid{gap:14px!important}
+#planos .grid>div{padding:19px 17px!important;border-radius:17px!important}
+#planos .grid>div .my-4{margin:12px 0!important;display:flex;align-items:baseline;justify-content:center;gap:5px}
+#planos .grid>div [id^="preco"]{font-size:2rem!important;line-height:1.12!important;font-weight:750!important;letter-spacing:-.05em}
+#planos .grid>div [id^="ciclo"]{font-size:.76rem!important}
+#planos .grid>div .text-xl{font-size:1rem!important}
+#planos .grid>div .mb-6{margin-bottom:14px!important}
+#planos .grid>div a{padding:11px 10px!important;font-size:.82rem!important;border-radius:11px!important;box-shadow:none!important}
+#btnMensal,#btnAnual{padding:9px 13px!important;font-size:.72rem!important}
+#planos .inline-flex{max-width:100%}
+}
+</style>
     <script defer src="site-config.js"></script>
     <script defer src="site-render.js"></script>
 </head>
@@ -267,9 +283,9 @@
 
                 <div>
                     <div class="my-4">
-                        <span class="text-xl font-bold">R$</span>
-                        <span id="precoSolo" class="text-6xl font-black">35</span>
-                        <span id="cicloSolo" class="text-lg font-semibold text-gray-300">/Mês</span>
+                        <span class="text-sm sm:text-base font-semibold text-gray-300 align-top">R$</span>
+                        <span id="precoSolo" class="text-4xl sm:text-5xl font-extrabold tracking-tight">35</span>
+                        <span id="cicloSolo" class="text-xs sm:text-sm font-medium text-gray-400">/Mês</span>
                     </div>
                     <a href="https://wa.me/5571997108320?text=Ol%C3%A1!%20Quero%20assinar%20o%20plano%20SOLO%20(1%20Tela)%20da%20Nix%20TV!" target="_blank" class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-extrabold text-white shadow-lg hover:opacity-95 transition">
                         ASSINAR PLANO SOLO
@@ -303,9 +319,9 @@
 
                 <div>
                     <div class="my-4">
-                        <span class="text-xl font-bold">R$</span>
-                        <span id="precoDuo" class="text-6xl font-black">50</span>
-                        <span id="cicloDuo" class="text-lg font-semibold text-gray-300">/Mês</span>
+                        <span class="text-sm sm:text-base font-semibold text-gray-300 align-top">R$</span>
+                        <span id="precoDuo" class="text-4xl sm:text-5xl font-extrabold tracking-tight">50</span>
+                        <span id="cicloDuo" class="text-xs sm:text-sm font-medium text-gray-400">/Mês</span>
                     </div>
                     <a href="https://wa.me/5571997108320?text=Ol%C3%A1!%20Quero%20assinar%20o%20plano%20DUO%20(2%20Telas)%20da%20Nix%20TV!" target="_blank" class="block w-full py-4 rounded-xl btn-neon font-black text-white shadow-xl transition">
                         ASSINAR PLANO DUO
@@ -335,9 +351,9 @@
 
                 <div>
                     <div class="my-4">
-                        <span class="text-xl font-bold">R$</span>
-                        <span id="precoFamilia" class="text-6xl font-black">75</span>
-                        <span id="cicloFamilia" class="text-lg font-semibold text-gray-300">/Mês</span>
+                        <span class="text-sm sm:text-base font-semibold text-gray-300 align-top">R$</span>
+                        <span id="precoFamilia" class="text-4xl sm:text-5xl font-extrabold tracking-tight">75</span>
+                        <span id="cicloFamilia" class="text-xs sm:text-sm font-medium text-gray-400">/Mês</span>
                     </div>
                     <a href="https://wa.me/5571997108320?text=Ol%C3%A1!%20Quero%20assinar%20o%20plano%20FAM%C3%8DLIA%20(3%20Telas)%20da%20Nix%20TV!" target="_blank" class="block w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 font-extrabold text-nixdark shadow-lg hover:opacity-95 transition">
                         ASSINAR PLANO FAMÍLIA
