@@ -58,6 +58,8 @@
             transform: translateY(-2px);
         }
     </style>
+    <script defer src="site-config.js"></script>
+    <script defer src="site-render.js"></script>
 </head>
 <body class="antialiased selection:bg-nixcyan selection:text-nixdark">
 
@@ -90,6 +92,7 @@
         </div>
     </header>
 
+    <div id="siteBanners" class="max-w-7xl mx-auto px-4 pt-5" aria-label="Promoções"></div>
     <!-- HERO / CAPA PRINCIPAL -->
     <section id="inicio" class="relative pt-12 pb-20 px-4 overflow-hidden">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
@@ -399,7 +402,7 @@
             e.preventDefault();
             const nome = document.getElementById('nomeCliente').value;
             const aparelho = document.getElementById('aparelhoCliente').value;
-            const numero = "5571997108320";
+            const numero = (window.NIX_CONFIG && window.NIX_CONFIG.whatsapp) || "5571997108320";
             const msg = `Olá, equipe Nix TV! Meu nome é *${nome}* e quero solicitar meu *TESTE GRÁTIS* para o aparelho: *${aparelho}* (+ 15% de desconto).`;
             window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
         }
@@ -410,20 +413,20 @@
             if (ciclo === 'anual') {
                 btnAnual.classList.add('bg-purple-600', 'text-white');
                 btnMensal.classList.remove('bg-purple-600', 'text-white');
-                document.getElementById('precoSolo').innerText = '299';
+                document.getElementById('precoSolo').innerText = String(window.NIX_CONFIG?.prices?.solo?.annual ?? 299);
                 document.getElementById('cicloSolo').innerText = '/Ano';
-                document.getElementById('precoDuo').innerText = '449';
+                document.getElementById('precoDuo').innerText = String(window.NIX_CONFIG?.prices?.duo?.annual ?? 449);
                 document.getElementById('cicloDuo').innerText = '/Ano';
-                document.getElementById('precoFamilia').innerText = '649';
+                document.getElementById('precoFamilia').innerText = String(window.NIX_CONFIG?.prices?.familia?.annual ?? 649);
                 document.getElementById('cicloFamilia').innerText = '/Ano';
             } else {
                 btnMensal.classList.add('bg-purple-600', 'text-white');
                 btnAnual.classList.remove('bg-purple-600', 'text-white');
-                document.getElementById('precoSolo').innerText = '35';
+                document.getElementById('precoSolo').innerText = String(window.NIX_CONFIG?.prices?.solo?.monthly ?? 35);
                 document.getElementById('cicloSolo').innerText = '/Mês';
-                document.getElementById('precoDuo').innerText = '50';
+                document.getElementById('precoDuo').innerText = String(window.NIX_CONFIG?.prices?.duo?.monthly ?? 50);
                 document.getElementById('cicloDuo').innerText = '/Mês';
-                document.getElementById('precoFamilia').innerText = '75';
+                document.getElementById('precoFamilia').innerText = String(window.NIX_CONFIG?.prices?.familia?.monthly ?? 75);
                 document.getElementById('cicloFamilia').innerText = '/Mês';
             }
         }
