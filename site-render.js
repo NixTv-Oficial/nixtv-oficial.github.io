@@ -5,6 +5,10 @@
    const annual=document.getElementById('btnAnual')?.classList.contains('bg-purple-600');
    const money=v=>Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
    const now=Date.now();
+   const hero=c.settings||{};
+   for(const [id,value] of [['heroLead',hero.heroLead],['heroHighlight',hero.heroHighlight],['heroDescription',hero.heroDescription]]){
+     const node=document.getElementById(id);if(node&&typeof value==='string'&&value.trim())node.textContent=value;
+   }
    for(const [name,id] of [['solo','Solo'],['duo','Duo'],['familia','Familia']]){
      const el=document.getElementById('preco'+id);
      const plan=c.planDetails?.[name]||{};
