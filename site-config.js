@@ -1,18 +1,26 @@
 window.NIX_CONFIG = {
   "prices": {
     "solo": {
-      "monthly": 20,
-      "annual": 299
+      "monthly": 24.9,
+      "annual": 249.9
     },
     "duo": {
-      "monthly": 40,
-      "annual": 449
+      "monthly": 34.9,
+      "annual": 279.9
     },
     "familia": {
-      "monthly": 75,
-      "annual": 649
+      "monthly": 44.9,
+      "annual": 299.9
     }
   },
   "whatsapp": "5571997108320",
-  "banners": []
+  "banners": [],
+  "movies": [],
+  "settings": {
+    "moviesTitle": "Filmes e séries em destaque",
+    "moviesDescription": "Confira algumas novidades selecionadas pela NixTv.",
+    "showMovies": true,
+    "showBanners": true,
+    "trialMessage": "Olá, equipe Nix TV! Meu nome é *{nome}* e quero solicitar meu *TESTE GRÁTIS* para o aparelho: *{aparelho}* (+ 15% de desconto)."
+  }
 };
