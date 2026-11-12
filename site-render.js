@@ -1,9 +1,10 @@
 (function(){
  let c=window.NIX_CONFIG;if(!c)return;
+ const formatarPreco=v=>Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
  function init(){
    const annual=document.getElementById('btnAnual')?.classList.contains('bg-purple-600');
    for(const [name,id] of [['solo','Solo'],['duo','Duo'],['familia','Familia']]){
-     const el=document.getElementById('preco'+id);if(el&&c.prices?.[name])el.textContent=String(c.prices[name][annual?'annual':'monthly']);
+     const el=document.getElementById('preco'+id);if(el&&c.prices?.[name])el.textContent=formatarPreco(c.prices[name][annual?'annual':'monthly']);
    }
    document.querySelectorAll('a[href*="wa.me/"]').forEach(a=>{
      try{const u=new URL(a.href);if(u.hostname==='wa.me'){u.pathname='/'+c.whatsapp;a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';}}catch{}
