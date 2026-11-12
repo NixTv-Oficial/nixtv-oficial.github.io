@@ -1,5 +1,5 @@
 (function(){
- const c=window.NIX_CONFIG;if(!c)return;
+ let c=window.NIX_CONFIG;if(!c)return;
  function init(){
    const annual=document.getElementById('btnAnual')?.classList.contains('bg-purple-600');
    for(const [name,id] of [['solo','Solo'],['duo','Duo'],['familia','Familia']]){
@@ -26,5 +26,12 @@
      });
    }
  }
+ window.addEventListener('message',event=>{
+   if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='NIX_ADMIN_PREVIEW')return;
+   if(!location.pathname.endsWith('/')&&!location.pathname.endsWith('/index.html'))return;
+   const next=event.data.config;
+   if(!next||typeof next!=='object'||!next.prices||!Array.isArray(next.banners))return;
+   c=next;window.NIX_CONFIG=next;init();
+ });
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
