@@ -1,11 +1,11 @@
 window.NIX_CONFIG = {
   "prices": {
     "solo": {
-      "monthly": 35,
+      "monthly": 20,
       "annual": 299
     },
     "duo": {
-      "monthly": 50,
+      "monthly": 40,
       "annual": 449
     },
     "familia": {
