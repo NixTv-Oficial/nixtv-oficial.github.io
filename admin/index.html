@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NixTv | Administração</title>
-<script src="https://cdn.tailwindcss.com"></script><script src="../site-config.js"></script>
+<script src="https://cdn.tailwindcss.com"></script><script src="../site-config.js"></script><script src="auth-config.js"></script>
 </head><body class="min-h-screen bg-slate-950 text-white p-5">
 <main class="max-w-3xl mx-auto space-y-6">
 <header class="flex justify-between items-center"><h1 class="text-3xl font-bold">NixTv · Administração</h1><a href="../" class="text-cyan-300">Ver site</a></header>
 <p class="text-slate-300">Edite preços, WhatsApp e banners. Ao publicar, o painel salva as configurações na branch main do GitHub. A atualização pública depende do deploy.</p>
-<section class="rounded-xl bg-slate-900 p-5 space-y-3"><h2 class="font-bold text-xl">Conectar ao GitHub</h2>
+<section class="rounded-xl bg-slate-900 p-5 space-y-3"><h2 class="font-bold text-xl">Conectar ao GitHub</h2><div id="oauth" class="hidden space-y-2"><a id="login" class="inline-block bg-emerald-600 px-5 py-3 rounded font-bold">Entrar com GitHub</a><button id="logout" class="border px-4 py-2 rounded">Sair</button><p class="text-sm text-slate-300">Autenticação segura via GitHub. Nenhum token pessoal é necessário.</p></div><div id="legacy">
 <p class="text-sm text-slate-300">Use um token pessoal de acesso refinado (fine-grained) do GitHub com permissão <strong>Contents: Read and write</strong> somente neste repositório. O token fica apenas na memória desta aba, não é salvo no site nem no navegador. Esta página é pública; a autorização para publicar é verificada pelo GitHub.</p>
 <input id="token" type="password" autocomplete="off" placeholder="Cole seu token do GitHub" class="w-full bg-slate-800 rounded p-3" />
-<button id="connect" class="bg-cyan-600 px-5 py-2 rounded font-bold">Conectar e carregar</button><p id="status" role="status" class="text-sm text-cyan-200"></p></section>
+<button id="connect" class="bg-cyan-600 px-5 py-2 rounded font-bold">Conectar e carregar</button></div><p id="status" role="status" class="text-sm text-cyan-200"></p></section>
 <form id="editor" class="space-y-5 hidden">
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">Valores dos planos (R$)</h2><div id="prices" class="grid sm:grid-cols-2 gap-3"></div></section>
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">WhatsApp</h2><label class="block text-sm">Número com DDI e DDD, somente dígitos</label><input id="whatsapp" inputmode="numeric" class="w-full bg-slate-800 rounded p-3" required></section>
@@ -24,6 +24,9 @@ let token='', sha='', state=null;
 const $=id=>document.getElementById(id);
 const status=msg=>$('status').textContent=msg;
 function api(method, body) {
+ if(window.NIX_AUTH_API){
+   return fetch(window.NIX_AUTH_API+'/config',{method,credentials:'include',headers:{...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})}).then(async r=>{const data=await r.json();if(!r.ok)throw Error(data.message||data.error||'Erro '+r.status);return data;});
+ }
  return fetch('https://api.github.com/repos/'+repo+'/contents/'+path, {
  method, headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28', ...(body?{'Content-Type':'application/json'}:{})},
  ...(body?{body:JSON.stringify(body)}:{})
@@ -48,8 +51,8 @@ function render(){
  box.append(title,url,label,remove);wrap.append(box);
  });
 }
-$('connect').onclick=async()=>{
- token=$('token').value.trim();if(!token){status('Informe o token.');return;}
+async function connect(){
+ if(!window.NIX_AUTH_API){token=$('token').value.trim();if(!token){status('Informe o token.');return;}}
  status('Verificando acesso...');try{
  const file=await api('GET');sha=file.sha;
  const txt=decode64(file.content);
@@ -57,7 +60,9 @@ $('connect').onclick=async()=>{
  if(!match)throw Error('Formato de configuração inesperado.');
  state=JSON.parse(match[1]);$('token').value='';$('editor').classList.remove('hidden');render();status('Conectado. Configurações carregadas.');
  }catch(e){token='';status('Não foi possível conectar: '+e.message);}
-};
+}
+$('connect').onclick=connect;
+if(window.NIX_AUTH_API){$('legacy').classList.add('hidden');$('oauth').classList.remove('hidden');$('login').href=window.NIX_AUTH_API+'/login';$('logout').onclick=async()=>{await fetch(window.NIX_AUTH_API+'/logout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'}});location.reload();};connect();}
 $('add').onclick=()=>{state.banners.push({title:'',image:'',active:true});render();};
 $('editor').onsubmit=async e=>{
  e.preventDefault();if(!token)return status('Conecte-se novamente.');
