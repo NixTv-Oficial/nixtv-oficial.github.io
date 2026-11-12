@@ -140,7 +140,7 @@ $('editor').onsubmit=async e=>{
  state.settings={moviesTitle:$('moviesTitle').value.trim(),moviesDescription:$('moviesDescription').value.trim(),showMovies:$('showMovies').checked,showBanners:$('showBanners').checked,trialMessage:$('trialMessage').value.trim()};
  for(const b of [...state.banners,...(state.movies||[])]){if(b.image && !/^(https:\/\/|assets\/uploads\/)/i.test(b.image))return status('Imagens precisam usar URLs HTTPS.');}
  for(const [name,promo] of Object.entries(state.promotions||{})){
- if(promo.active){const base=Number(state.prices[name]?.[promo.period||'monthly']);const price=Number(promo.price);if(!Number.isFinite(price)||price<0||price>=base)return status('Promoção inválida no plano '+name+': o preço deve ser menor que o original.');if(promo.start&&promo.end&&promo.start>promo.end)return status('Datas inválidas na promoção de '+name);}
+ if(promo.active){const base=Number(state.prices[name]?.[promo.period||'monthly']);const price=Number(promo.price);if(promo.price===''||promo.price==null||!Number.isFinite(price)||price<0||price>=base)return status('Promoção inválida no plano '+name+': o preço deve ser menor que o original.');if(promo.start&&promo.end&&promo.start>promo.end)return status('Datas inválidas na promoção de '+name);}
  }
  status('Publicando...');
  try {
