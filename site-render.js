@@ -44,6 +44,7 @@
      });
    }
  }
+ window.addEventListener('nix:cycle-change',init);
  window.addEventListener('message',event=>{
    if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='NIX_ADMIN_PREVIEW')return;
    if(!location.pathname.endsWith('/')&&!location.pathname.endsWith('/index.html'))return;
