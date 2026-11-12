@@ -396,7 +396,7 @@
         <span class="text-sm font-extrabold tracking-wide">Chama no WhatsApp</span>
     </a>
 
-    <section id="moviesSection" hidden class="py-12 sm:py-16 bg-slate-950/70 border-t border-white/10"><div class="max-w-7xl mx-auto px-4 sm:px-6"><div class="mb-5 sm:mb-7"><p class="text-cyan-300 font-semibold text-xs uppercase tracking-widest mb-2">Novidades</p><h2 class="text-2xl sm:text-3xl font-black">Filmes e séries em destaque</h2><p class="text-sm text-slate-400 mt-2">Confira algumas novidades selecionadas pela NixTv.</p></div><div id="siteMovies" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5"></div></div></section>
+    <section id="moviesSection" hidden class="py-12 sm:py-16 bg-slate-950/70 border-t border-white/10"><div class="max-w-7xl mx-auto px-4 sm:px-6"><div class="mb-5 sm:mb-7"><p class="text-cyan-300 font-semibold text-xs uppercase tracking-widest mb-2">Novidades</p><h2 id="moviesHeading" class="text-2xl sm:text-3xl font-black">Filmes e séries em destaque</h2><p id="moviesDescription" class="text-sm text-slate-400 mt-2">Confira algumas novidades selecionadas pela NixTv.</p></div><div id="siteMovies" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5"></div></div></section>
     <!-- SCRIPTS INTERATIVOS -->
     <script>
         function enviarTesteWhatsApp(e) {
@@ -404,7 +404,8 @@
             const nome = document.getElementById('nomeCliente').value;
             const aparelho = document.getElementById('aparelhoCliente').value;
             const numero = (window.NIX_CONFIG && window.NIX_CONFIG.whatsapp) || "5571997108320";
-            const msg = `Olá, equipe Nix TV! Meu nome é *${nome}* e quero solicitar meu *TESTE GRÁTIS* para o aparelho: *${aparelho}* (+ 15% de desconto).`;
+            const template = window.NIX_CONFIG?.settings?.trialMessage || 'Olá, equipe Nix TV! Meu nome é *{nome}* e quero solicitar meu *TESTE GRÁTIS* para o aparelho: *{aparelho}* (+ 15% de desconto).';
+            const msg = template.replaceAll('{nome}', nome).replaceAll('{aparelho}', aparelho);
             const url = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
             const popup = window.open(url, '_blank', 'noopener,noreferrer');
             if (!popup) window.location.href = url;
