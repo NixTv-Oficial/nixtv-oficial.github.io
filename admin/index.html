@@ -2,10 +2,10 @@
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>NixTv | Administração</title>
 <script src="https://cdn.tailwindcss.com"></script><script src="../site-config.js"></script><script src="auth-config.js"></script>
-</head><body class="min-h-screen bg-slate-950 text-white p-5">
+<style>*{box-sizing:border-box}body{font-family:system-ui,sans-serif;background:radial-gradient(ellipse at top,#172d52,#080e1d 70%)}main{max-width:960px!important}section{border:1px solid #334155;background:#111e34!important;box-shadow:0 8px 30px #0002}input{min-width:0;outline:none}input:focus{outline:2px solid #22d3ee}button{min-height:42px}#status{overflow-wrap:anywhere}.media-preview{max-width:100%;width:160px;height:110px;object-fit:cover;border-radius:10px}.poster-preview{width:88px;height:120px;object-fit:cover;border-radius:10px}@media(max-width:640px){body{padding:12px!important}section{padding:15px!important}main>header h1{font-size:1.6rem!important}input{font-size:16px!important}#editor{gap:12px!important}}</style></head><body class="min-h-screen bg-slate-950 text-white p-5">
 <main class="max-w-3xl mx-auto space-y-6">
 <header class="flex justify-between items-center"><h1 class="text-3xl font-bold">NixTv · Administração</h1><a href="../" class="text-cyan-300">Ver site</a></header>
-<p class="text-slate-300">Edite preços, WhatsApp e banners. Ao publicar, o painel salva as configurações na branch main do GitHub. A atualização pública depende do deploy.</p>
+<p class="text-slate-300">Gerencie preços, WhatsApp, banners e novidades em um só lugar. As alterações são publicadas no GitHub e aparecem no site após a atualização.</p>
 <section class="rounded-xl bg-slate-900 p-5 space-y-3"><h2 class="font-bold text-xl">Conectar ao GitHub</h2><div id="oauth" class="hidden space-y-2"><a id="login" class="inline-block bg-emerald-600 px-5 py-3 rounded font-bold">Entrar com GitHub</a><button id="logout" class="border px-4 py-2 rounded">Sair</button><p class="text-sm text-slate-300">Autenticação segura via GitHub. Nenhum token pessoal é necessário.</p></div><div id="legacy">
 <p class="text-sm text-slate-300">Use um token pessoal de acesso refinado (fine-grained) do GitHub com permissão <strong>Contents: Read and write</strong> somente neste repositório. O token fica apenas na memória desta aba, não é salvo no site nem no navegador. Esta página é pública; a autorização para publicar é verificada pelo GitHub.</p>
 <input id="token" type="password" autocomplete="off" placeholder="Cole seu token do GitHub" class="w-full bg-slate-800 rounded p-3" />
@@ -14,13 +14,34 @@
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">Valores dos planos (R$)</h2><div id="prices" class="grid sm:grid-cols-2 gap-3"></div></section>
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">WhatsApp</h2><label class="block text-sm">Número com DDI e DDD, somente dígitos</label><input id="whatsapp" inputmode="numeric" class="w-full bg-slate-800 rounded p-3" required></section>
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">Banners promocionais</h2>
-<p class="text-sm text-slate-300">Use o endereço HTTPS de uma imagem hospedada publicamente. Você pode adicionar, ocultar ou excluir banners.</p>
-<div id="banners" class="space-y-3"></div><button type="button" id="add" class="border border-cyan-400 rounded px-4 py-2">+ Adicionar banner</button></section>
-<button class="bg-emerald-600 rounded px-6 py-3 font-bold w-full" type="submit">Salvar e publicar no GitHub</button>
+<p class="text-sm text-slate-300">Adicione imagens pelo celular ou computador (até 1 MB), ou use um link HTTPS. Recomendamos banners horizontais.</p>
+<div id="banners" class="grid sm:grid-cols-2 gap-3"></div><button type="button" id="add" class="border border-cyan-400 rounded px-4 py-2">+ Adicionar banner</button></section><section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">🎬 Filmes e séries em destaque</h2><p class="text-sm text-slate-300">Adicione título e capa de novidades. Use somente imagens que você tenha direito de publicar.</p><div id="movies" class="grid sm:grid-cols-2 gap-3"></div><button type="button" id="addMovie" class="border border-cyan-400 rounded px-4 py-2">+ Adicionar filme ou série</button></section><section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">📱 Testar WhatsApp</h2><p class="text-sm text-slate-300">Teste se o botão abre a conversa com o número configurado. O recebimento precisa ser confirmado no WhatsApp de destino.</p><a id="testWhatsapp" target="_blank" rel="noopener noreferrer" class="inline-block bg-emerald-700 rounded px-4 py-3 font-semibold" href="#">Abrir teste no WhatsApp ↗</a></section><button class="bg-emerald-600 rounded px-6 py-3 font-bold w-full sticky bottom-2 shadow-xl" type="submit">Salvar e publicar no GitHub</button>
 </form></main>
 <script>
 const repo='NixTv-Oficial/nixtv-oficial.github.io', path='site-config.js';
 let token='', sha='', state=null;
+async function uploadImage(file){
+ if(!file||!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error('Use JPG, PNG ou WEBP.');
+ if(file.size>1024*1024)throw Error('Imagem maior que 1 MB. Comprima a imagem.');
+ if(!token)throw Error('Conecte ao GitHub primeiro.');
+ const ext={'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[file.type];
+ const name='assets/uploads/'+crypto.randomUUID()+'.'+ext;
+ const bytes=new Uint8Array(await file.arrayBuffer());let binary='';for(const b of bytes)binary+=String.fromCharCode(b);
+ const r=await fetch('https://api.github.com/repos/'+repo+'/contents/'+name,{method:'PUT',headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({message:'Adicionar imagem NixTv',content:btoa(binary),branch:'main'})});
+ const data=await r.json();if(!r.ok)throw Error(data.message||'Falha ao enviar imagem');
+ return 'assets/uploads/'+name.split('/').pop();
+}
+function mediaControl(item,cls){
+ const wrap=document.createElement('div');wrap.className='space-y-2';
+ const preview=document.createElement('img');preview.className=cls;preview.alt='Prévia';preview.loading='lazy';
+ const url=document.createElement('input');url.placeholder='Link HTTPS ou caminho da imagem';url.value=item.image||'';url.className='w-full rounded p-2 bg-slate-700';
+ function refresh(){preview.src=item.image?.startsWith('assets/')?'../'+item.image:(item.image||'');preview.hidden=!item.image;}
+ url.oninput=()=>{item.image=url.value;refresh();};
+ const file=document.createElement('input');file.type='file';file.accept='image/png,image/jpeg,image/webp';file.className='block w-full text-xs';
+ file.onchange=async()=>{if(!file.files?.[0])return;file.disabled=true;status('Enviando imagem ao GitHub...');try{item.image=await uploadImage(file.files[0]);url.value=item.image;refresh();status('Imagem enviada. Clique em Salvar e publicar.');}catch(e){status('Falha no upload: '+e.message);}finally{file.disabled=false;file.value='';}};
+ wrap.append(preview,url,file);refresh();return wrap;
+}
+
 const $=id=>document.getElementById(id);
 const status=msg=>$('status').textContent=msg;
 function api(method, body) {
@@ -41,14 +62,25 @@ function render(){
  $('prices').append(input(name+' — Mensal',values.monthly,name+'.monthly'),input(name+' — Anual',values.annual,name+'.annual'));
  }
  $('whatsapp').value=state.whatsapp;
+ state.movies ||= [];
+ $('testWhatsapp').href='https://wa.me/'+state.whatsapp+'?text='+encodeURIComponent('Olá! Teste do contato NixTv.');
  const wrap=$('banners');wrap.replaceChildren();
  state.banners.forEach((b,i)=>{
  const box=document.createElement('div');box.className='rounded-lg bg-slate-800 p-3 space-y-2';
  const title=document.createElement('input');title.placeholder='Título';title.value=b.title||'';title.className='w-full rounded p-2 bg-slate-700';title.oninput=()=>b.title=title.value;
- const url=document.createElement('input');url.placeholder='https://... imagem';url.value=b.image||'';url.className='w-full rounded p-2 bg-slate-700';url.oninput=()=>b.image=url.value;
+ const media=mediaControl(b,'media-preview');
  const label=document.createElement('label');label.className='flex gap-2 items-center';const active=document.createElement('input');active.type='checkbox';active.checked=!!b.active;active.onchange=()=>b.active=active.checked;label.append(active,document.createTextNode('Banner ativo'));
  const remove=document.createElement('button');remove.type='button';remove.className='text-red-300';remove.textContent='Excluir banner';remove.onclick=()=>{state.banners.splice(i,1);render();};
- box.append(title,url,label,remove);wrap.append(box);
+ box.append(title,media,label,remove);wrap.append(box);
+ });
+ const movies=$('movies');movies.replaceChildren();
+ state.movies.forEach((m,i)=>{
+ const box=document.createElement('div');box.className='rounded-lg bg-slate-800 p-3 space-y-2';
+ const title=document.createElement('input');title.placeholder='Nome do filme ou série';title.value=m.title||'';title.className='w-full rounded p-2 bg-slate-700';title.oninput=()=>m.title=title.value;
+ const media=mediaControl(m,'poster-preview');
+ const label=document.createElement('label');label.className='flex gap-2 items-center';const active=document.createElement('input');active.type='checkbox';active.checked=!!m.active;active.onchange=()=>m.active=active.checked;label.append(active,document.createTextNode('Exibir no site'));
+ const remove=document.createElement('button');remove.type='button';remove.className='text-red-300';remove.textContent='Excluir';remove.onclick=()=>{state.movies.splice(i,1);render();};
+ box.append(title,media,label,remove);movies.append(box);
  });
 }
 async function connect(){
@@ -64,12 +96,13 @@ async function connect(){
 $('connect').onclick=connect;
 if(window.NIX_AUTH_API){$('legacy').classList.add('hidden');$('oauth').classList.remove('hidden');$('login').href=window.NIX_AUTH_API+'/login';$('logout').onclick=async()=>{await fetch(window.NIX_AUTH_API+'/logout',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'}});location.reload();};connect();}
 $('add').onclick=()=>{state.banners.push({title:'',image:'',active:true});render();};
+$('addMovie').onclick=()=>{state.movies ||= [];state.movies.push({title:'',image:'',active:true});render();};
 $('editor').onsubmit=async e=>{
  e.preventDefault();if(!token)return status('Conecte-se novamente.');
  for(const el of $('prices').querySelectorAll('input')){const [name,period]=el.dataset.key.split('.');state.prices[name][period]=Number(el.value);}
  const phone=$('whatsapp').value.trim();if(!/^\d{10,15}$/.test(phone))return status('Número inválido: use 10 a 15 dígitos.');
  state.whatsapp=phone;
- for(const b of state.banners){if(b.image && !/^https:\/\//i.test(b.image))return status('Imagens precisam usar URLs HTTPS.');}
+ for(const b of [...state.banners,...(state.movies||[])]){if(b.image && !/^(https:\/\/|assets\/uploads\/)/i.test(b.image))return status('Imagens precisam usar URLs HTTPS.');}
  status('Publicando...');
  try {
  const content='window.NIX_CONFIG = '+JSON.stringify(state,null,2)+';\n';
