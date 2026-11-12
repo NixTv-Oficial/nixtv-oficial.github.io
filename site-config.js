@@ -14,11 +14,5 @@ window.NIX_CONFIG = {
     }
   },
   "whatsapp": "5571997108320",
-  "banners": [
-    {
-      "title": "",
-      "image": "",
-      "active": true
-    }
-  ]
+  "banners": []
 };
