@@ -10,7 +10,13 @@
 <p class="text-sm text-slate-300">Use um token pessoal de acesso refinado (fine-grained) do GitHub com permissão <strong>Contents: Read and write</strong> somente neste repositório. O token fica apenas na memória desta aba, não é salvo no site nem no navegador. Esta página é pública; a autorização para publicar é verificada pelo GitHub.</p>
 <input id="token" type="password" autocomplete="off" placeholder="Cole seu token do GitHub" class="w-full bg-slate-800 rounded p-3" />
 <button id="connect" class="bg-cyan-600 px-5 py-2 rounded font-bold">Conectar e carregar</button></div><p id="status" role="status" class="text-sm text-cyan-200"></p></section>
-<form id="editor" class="space-y-5 hidden">
+<form id="editor" class="space-y-5 hidden"><section id="visualEditor" class="bg-slate-900 p-4 sm:p-5 rounded-xl space-y-3 hidden">
+<div class="flex flex-wrap justify-between items-center gap-2"><div><h2 class="text-xl font-bold">✏️ Editor visual do site</h2><p class="text-xs text-slate-300">Clique nos lápis sobre os elementos para editar.</p></div><div class="flex gap-2"><button type="button" id="desktopMode" class="border border-cyan-500 rounded px-3 py-2 text-sm">Computador</button><button type="button" id="mobileMode" class="border border-slate-500 rounded px-3 py-2 text-sm">Celular</button></div></div>
+<div class="flex flex-wrap gap-2"><button type="button" id="previewDraft" class="bg-cyan-700 px-3 py-2 rounded text-sm">👁 Pré-visualizar</button><button type="button" id="discardDraft" class="bg-slate-700 px-3 py-2 rounded text-sm">↶ Descartar alterações</button><button type="button" id="openSettings" class="border border-slate-500 px-3 py-2 rounded text-sm">⚙ Configurações detalhadas</button></div>
+<div class="rounded-xl bg-slate-950 p-2 sm:p-3 overflow-hidden"><iframe id="sitePreview" title="Prévia editável do site NixTv" src="../" class="w-full border-0 rounded-lg bg-slate-950" style="height:620px;min-height:400px"></iframe></div>
+<p class="text-xs text-slate-400">A prévia mostra alterações não publicadas. Salve pelo botão verde abaixo. O editor visual cobre preços, títulos de novidades, banners e capas; demais ajustes ficam nas configurações detalhadas.</p>
+</section>
+
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">Valores dos planos (R$)</h2><div id="prices" class="grid sm:grid-cols-2 gap-3"></div></section>
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">WhatsApp</h2><label class="block text-sm">Número com DDI e DDD, somente dígitos</label><input id="whatsapp" inputmode="numeric" class="w-full bg-slate-800 rounded p-3" required></section>
 <section class="bg-slate-900 p-5 rounded-xl space-y-3"><h2 class="text-xl font-bold">Banners promocionais</h2>
@@ -19,7 +25,7 @@
 </form></main>
 <script>
 const repo='NixTv-Oficial/nixtv-oficial.github.io', path='site-config.js';
-let token='', sha='', state=null;
+let token='', sha='', state=null, savedState=null, visualMode='desktop';
 async function uploadImage(file){
  if(!file||!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error('Use JPG, PNG ou WEBP.');
  if(file.size>1024*1024)throw Error('Imagem maior que 1 MB. Comprima a imagem.');
@@ -96,7 +102,7 @@ async function connect(){
  const txt=decode64(file.content);
  const match=txt.match(/^window\.NIX_CONFIG\s*=\s*([\s\S]*?);\s*$/);
  if(!match)throw Error('Formato de configuração inesperado.');
- state=JSON.parse(match[1]);$('token').value='';$('editor').classList.remove('hidden');render();status('Conectado. Configurações carregadas.');
+ state=JSON.parse(match[1]);savedState=structuredClone(state);$('token').value='';$('editor').classList.remove('hidden');$('visualEditor').classList.remove('hidden');render();updatePreview();status('Conectado. Editor visual pronto.');
  }catch(e){token='';status('Não foi possível conectar: '+e.message);}
 }
 $('connect').onclick=connect;
@@ -114,7 +120,40 @@ $('editor').onsubmit=async e=>{
  try {
  const content='window.NIX_CONFIG = '+JSON.stringify(state,null,2)+';\n';
  const result=await api('PUT',{message:'Atualizar configurações pelo painel NixTv',content:encode64(content),sha,branch:'main'});
- sha=result.content.sha;status('Publicado no GitHub! Aguarde a atualização do site.');
+ sha=result.content.sha;savedState=structuredClone(state);updatePreview();status('Publicado no GitHub! Aguarde a atualização do site.');
  }catch(err){status('Falha ao publicar: '+err.message+' (recarregue as configurações se houver conflito).');}
 };
+
+function syncFieldsToState(){
+ if(!state)return;
+ for(const el of $('prices').querySelectorAll('input')){const [name,period]=el.dataset.key.split('.');state.prices[name][period]=Number(el.value);}
+ state.whatsapp=$('whatsapp').value.trim();
+ state.settings={moviesTitle:$('moviesTitle').value.trim(),moviesDescription:$('moviesDescription').value.trim(),showMovies:$('showMovies').checked,showBanners:$('showBanners').checked,trialMessage:$('trialMessage').value.trim()};
+}
+function updatePreview(){
+ if(!state)return;
+ const frame=$('sitePreview');if(!frame?.contentWindow)return;
+ frame.contentWindow.postMessage({type:'NIX_ADMIN_PREVIEW',config:structuredClone(state)},location.origin);
+}
+function decoratePreview(){
+ const frame=$('sitePreview');let doc;
+ try{doc=frame.contentDocument;if(!doc?.body)return;}catch{return;}
+ if(doc.getElementById('nixEditorStyle'))return;
+ const style=doc.createElement('style');style.id='nixEditorStyle';style.textContent='.nix-edit-pencil{position:absolute!important;z-index:100!important;right:5px;top:5px;background:#0891b2!important;color:white!important;border-radius:100px!important;padding:7px!important;font:600 12px system-ui!important;box-shadow:0 2px 8px #0009!important;cursor:pointer!important}.nix-edit-target{position:relative!important;outline:1px dashed rgba(34,211,238,.5)!important}';doc.head.append(style);
+ function pencil(target,action){if(!target||target.dataset.nixEdit)return;target.dataset.nixEdit='1';target.classList.add('nix-edit-target');const btn=doc.createElement('button');btn.type='button';btn.className='nix-edit-pencil';btn.textContent='✎';btn.title='Editar';btn.onclick=e=>{e.preventDefault();e.stopPropagation();action();};target.append(btn);}
+ for(const [name,id] of [['solo','Solo'],['duo','Duo'],['familia','Familia']]){
+ const el=doc.getElementById('preco'+id);
+ pencil(el,()=>{const annual=doc.getElementById('btnAnual')?.classList.contains('bg-purple-600');const period=annual?'annual':'monthly';const old=state.prices[name][period];const v=prompt('Novo valor em R$ para '+name+' ('+period+')',old);if(v===null)return;const n=Number(v.replace(',','.'));if(!Number.isFinite(n)||n<0)return alert('Digite um valor válido.');state.prices[name][period]=n;render();updatePreview();});
+ }
+ pencil(doc.getElementById('moviesHeading'),()=>{const v=prompt('Título da seção',state.settings?.moviesTitle||'Filmes e séries em destaque');if(v===null)return;state.settings||={};state.settings.moviesTitle=v;render();updatePreview();});
+ pencil(doc.getElementById('moviesDescription'),()=>{const v=prompt('Descrição da seção',state.settings?.moviesDescription||'Confira algumas novidades selecionadas pela NixTv.');if(v===null)return;state.settings||={};state.settings.moviesDescription=v;render();updatePreview();});
+ pencil(doc.getElementById('siteBanners'),()=>{$('banners').scrollIntoView({behavior:'smooth'});});
+ pencil(doc.getElementById('siteMovies'),()=>{$('movies').scrollIntoView({behavior:'smooth'});});
+}
+$('sitePreview').addEventListener('load',()=>{updatePreview();setTimeout(decoratePreview,250);});
+$('previewDraft').onclick=()=>{syncFieldsToState();updatePreview();$('sitePreview').scrollIntoView({behavior:'smooth'});status('Pré-visualização atualizada. Nada foi publicado ainda.');};
+$('discardDraft').onclick=()=>{if(!savedState)return;if(!confirm('Descartar alterações não publicadas?'))return;state=structuredClone(savedState);render();updatePreview();status('Alterações não publicadas descartadas.');};
+$('desktopMode').onclick=()=>{visualMode='desktop';$('sitePreview').style.maxWidth='100%';$('sitePreview').style.height='620px';};
+$('mobileMode').onclick=()=>{visualMode='mobile';$('sitePreview').style.maxWidth='390px';$('sitePreview').style.height='700px';$('sitePreview').style.display='block';$('sitePreview').style.margin='auto';};
+$('openSettings').onclick=()=>{$('prices').scrollIntoView({behavior:'smooth'});};
 </script></body></html>
