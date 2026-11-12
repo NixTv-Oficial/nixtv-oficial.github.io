@@ -450,6 +450,7 @@
                 document.getElementById('precoFamilia').innerText = formatarPreco(window.NIX_CONFIG?.prices?.familia?.monthly ?? 75);
                 document.getElementById('cicloFamilia').innerText = '/Mês';
             }
+            window.dispatchEvent(new Event('nix:cycle-change'));
         }
     </script>
 </body>
