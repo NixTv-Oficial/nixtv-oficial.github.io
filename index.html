@@ -187,7 +187,7 @@
                         </select>
                     </div>
 
-                    <div id="detalhesSmartTV" hidden class="grid grid-cols-2 gap-2.5 text-left">
+                    <div id="detalhesSmartTV" class="hidden grid grid-cols-2 gap-2.5 text-left">
                         <div class="min-w-0">
                             <label for="marcaSmartTV" class="block text-[11px] font-bold uppercase text-gray-300 mb-1">Marca da TV</label>
                             <select id="marcaSmartTV" disabled class="w-full min-w-0 bg-nixdark border border-gray-700 focus:border-nixcyan rounded-xl px-2.5 py-2.5 text-sm text-white outline-none">
@@ -455,7 +455,7 @@
         function atualizarDetalhesSmartTV() {
             const smart = document.getElementById('aparelhoCliente').value.startsWith('Smart TV');
             const area = document.getElementById('detalhesSmartTV');
-            area.hidden = !smart;
+            area.classList.toggle('hidden', !smart);
             for (const id of ['marcaSmartTV', 'idadeSmartTV']) {
                 const field = document.getElementById(id);
                 field.disabled = !smart;
