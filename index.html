@@ -445,8 +445,18 @@
                 aparelho = 'Smart TV — ' + marca + ' — ' + idade;
             }
             const numero = (window.NIX_CONFIG && window.NIX_CONFIG.whatsapp) || "5571997108320";
-            const template = window.NIX_CONFIG?.settings?.trialMessage || 'Olá, equipe Nix TV! Meu nome é *{nome}* e quero solicitar meu *TESTE GRÁTIS* para o aparelho: *{aparelho}* (+ 15% de desconto).';
-            const msg = template.replaceAll('{nome}', nome).replaceAll('{aparelho}', aparelho);
+            const smartTV = document.getElementById('aparelhoCliente').value.startsWith('Smart TV');
+            const marca = smartTV ? document.getElementById('marcaSmartTV').value : '';
+            const idade = smartTV ? document.getElementById('idadeSmartTV').value : '';
+            const msg = [
+                'Olá! Meu nome é *' + nome.trim() + '* e gostaria de solicitar um *TESTE GRÁTIS* da NixTv.',
+                '',
+                '*Informações do meu aparelho:*',
+                '📱 Dispositivo: *' + (smartTV ? 'Smart TV' : aparelho) + '*',
+                ...(smartTV ? ['📺 Marca: *' + marca + '*', '🗓️ TV: *' + idade + '*'] : []),
+                '',
+                'Podem me indicar o aplicativo adequado para o meu aparelho?'
+            ].join('\\n');
             const url = `https://wa.me/${numero}?text=${encodeURIComponent(msg)}`;
             const popup = window.open(url, '_blank', 'noopener,noreferrer');
             if (!popup) window.location.href = url;
