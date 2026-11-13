@@ -187,6 +187,22 @@
                         </select>
                     </div>
 
+                    <div id="detalhesSmartTV" hidden class="grid grid-cols-2 gap-2.5 text-left">
+                        <div class="min-w-0">
+                            <label for="marcaSmartTV" class="block text-[11px] font-bold uppercase text-gray-300 mb-1">Marca da TV</label>
+                            <select id="marcaSmartTV" disabled class="w-full min-w-0 bg-nixdark border border-gray-700 focus:border-nixcyan rounded-xl px-2.5 py-2.5 text-sm text-white outline-none">
+                                <option value="">Selecione</option>
+                                <option>Samsung</option><option>LG</option><option>TCL</option><option>Philips</option><option>Philco</option><option>Hisense</option><option>AOC</option><option>Panasonic</option><option>Sony</option><option>Outra marca</option><option>Não sei</option>
+                            </select>
+                        </div>
+                        <div class="min-w-0">
+                            <label for="idadeSmartTV" class="block text-[11px] font-bold uppercase text-gray-300 mb-1">Sua TV é...</label>
+                            <select id="idadeSmartTV" disabled class="w-full min-w-0 bg-nixdark border border-gray-700 focus:border-nixcyan rounded-xl px-2.5 py-2.5 text-sm text-white outline-none">
+                                <option value="">Selecione</option><option value="Recente">Recente</option><option value="Antiga">Antiga</option><option value="Não sei informar">Não sei informar</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-nixdark font-black text-lg py-4 rounded-xl shadow-lg shadow-green-500/30 transition flex items-center justify-center gap-2">
                         <span>📲 GERAR TESTE NO WHATSAPP</span>
                     </button>
@@ -418,7 +434,16 @@
         function enviarTesteWhatsApp(e) {
             e.preventDefault();
             const nome = document.getElementById('nomeCliente').value;
-            const aparelho = document.getElementById('aparelhoCliente').value;
+            let aparelho = document.getElementById('aparelhoCliente').value;
+            if (aparelho.startsWith('Smart TV')) {
+                const marca = document.getElementById('marcaSmartTV').value;
+                const idade = document.getElementById('idadeSmartTV').value;
+                if (!marca || !idade) {
+                    document.getElementById(!marca ? 'marcaSmartTV' : 'idadeSmartTV').focus();
+                    return;
+                }
+                aparelho = 'Smart TV — ' + marca + ' — ' + idade;
+            }
             const numero = (window.NIX_CONFIG && window.NIX_CONFIG.whatsapp) || "5571997108320";
             const template = window.NIX_CONFIG?.settings?.trialMessage || 'Olá, equipe Nix TV! Meu nome é *{nome}* e quero solicitar meu *TESTE GRÁTIS* para o aparelho: *{aparelho}* (+ 15% de desconto).';
             const msg = template.replaceAll('{nome}', nome).replaceAll('{aparelho}', aparelho);
@@ -426,6 +451,19 @@
             const popup = window.open(url, '_blank', 'noopener,noreferrer');
             if (!popup) window.location.href = url;
         }
+
+        function atualizarDetalhesSmartTV() {
+            const smart = document.getElementById('aparelhoCliente').value.startsWith('Smart TV');
+            const area = document.getElementById('detalhesSmartTV');
+            area.hidden = !smart;
+            for (const id of ['marcaSmartTV', 'idadeSmartTV']) {
+                const field = document.getElementById(id);
+                field.disabled = !smart;
+                field.required = smart;
+            }
+        }
+        document.getElementById('aparelhoCliente').addEventListener('change', atualizarDetalhesSmartTV);
+        atualizarDetalhesSmartTV();
 
         function formatarPreco(valor) { return Number(valor).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
         function trocarCiclo(ciclo) {
